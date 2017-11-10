@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="d_mgt_Mapper">
+	
+	<select id="emp_list" resultType="Employee_VO">
+		SELECT user_info.employee_num,user_info.Department AS department,user_info.Rank AS rank,user_info.Name AS name,
+		device_management.Active As active, device_info.Telnum AS phone
+		FROM terriordb.user_info
+		inner join device_info on user_info.employee_num=device_info.User_info_employee_num
+		inner join device_management on device_info.Id=device_management.Device_info_Id;
+	</select>
+	
+	
+	<!-- 단말&사원 리스트 검색 필터 -->
+	<select id="emp_search_list" resultType="Employee_VO">
+	
+	select user_info.employee_num, user_info.Department as department, user_info.Rank as rank,
+	user_info.Name as name,device_info.Telnum as phone,device_management.Active as active
+	FROM user_info
+	inner join device_info on user_info.employee_num=device_info.User_info_employee_num
+	inner join device_management on device_info.Id=device_management.Device_info_Id
+	WHERE department !='empty'
+		<if test='employee_num !=""'>
+			AND employee_num = #{employee_num}
+		</if>
+		<if test='department !="선택"'>
+			AND department = #{department}
+		</if>
+		
+		<if test='rank !="선택"'>
+			AND rank = #{rank}
+		</if>
+		
+		<if test='phone !=""'>
+			AND telnum = #{phone}
+		</if>
+		
+		<if test='name !=""'>
+			AND name = #{name}
+		</if>
+	  		
+	</select>
+	
+	<select id="user_info" resultType="C_mgt_userinfo_VO">
+		select device_management.Active AS active,
+		user_info.employee_num,user_info.Name AS name,user_info.Rank AS rank,user_info.Department AS department,user_info.Date_of_birth AS date_of_birth,user_info.Address AS address,
+		device_info.Telnum AS telnum,device_info.Os AS os,device_info.Manufacturer AS manufacturer
+		FROM user_info 
+		inner join device_info on user_info.employee_num=device_info.User_info_employee_num
+		inner join device_management on device_info.Id=device_management.Device_info_Id
+		where employee_num=#{emp_num};
+	</select>
+	
+	<select id="user_con" resultType="C_mgt_controller_VO">
+		select device_management.Wifi AS wifi,device_management.Bluetooth AS bluetooth,device_management.Tethering AS tethering,
+		device_management.Camera AS camera,device_management.VoiceRecord AS voiceRecord
+		From user_info 
+		inner join  device_info on user_info.employee_num=device_info.User_info_employee_num
+		inner join device_management on device_info.Id=device_management.Device_info_Id
+		where employee_num=#{emp_num};	
+	</select>
+	
+	<select id="user_applist" resultType="C_mgt_AppList_VO">
+		select application_info.name AS name,application_info.size AS size,application_info.version AS version
+		from application_info
+		inner join device_info on device_info.Id=application_info.Device_info_Id
+		inner join user_info on user_info.employee_num=device_info.User_info_employee_num
+		where user_info.employee_num=#{emp_num};
+	</select>
+	
+	<select id="user_applog" resultType="C_mgt_AppLog_VO">
+		select application_history.history,application_history.type,application_history.Date AS data_Time
+		from application_history
+		inner join device_info on device_info.Id=application_history.Device_info_Id
+		inner join user_info on user_info.employee_num=device_info.User_info_employee_num
+		where user_info.employee_num=#{emp_num};
+	</select>
+	
+	<select id="user_gps" resultType="C_mgt_Gps_VO">
+		SELECT latitude,longitude FROM location_history
+		WHERE Device_info_Id = (SELECT Id FROM device_info WHERE User_info_employee_num = #{emp_num})
+		order by idLocation DESC
+		<choose>
+    		<when test='rank == 0'>
+      			LIMIT 0,1;
+    		</when>
+    		<otherwise>
+      			LIMIT 1,1;
+    		</otherwise>
+  		</choose>
+	</select>
+</mapper>

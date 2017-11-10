@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="g_mgt_Mapper">
+	
+	<select id="group_list" resultType="GroupList_VO">
+		SELECT DISTINCT group_name,COUNT(employee_num) AS group_rows
+		FROM device_group
+		WHERE group_owner = #{id}
+		GROUP BY group_name;
+	</select>
+	
+	<select id="emp_list" resultType="Employee_VO">		
+		<![CDATA[
+	 	SELECT employee_num,Department AS department , Rank AS rank ,device_info.Telnum AS phone, Name AS name , Active as active
+		FROM terriordb.user_info
+		JOIN device_info ON employee_num = device_info.User_info_employee_num
+		JOIN device_management ON device_info.ID = device_management.Device_info_Id
+		WHERE employee_num
+		IN (
+			SELECT device_group.employee_num FROM device_group
+		    WHERE group_owner =#{id}
+		    AND group_name =#{group_name}
+		);]]>
+	</select>
+	
+	<select id="all_emp_list" resultType="Employee_VO">
+	<![CDATA[
+	SELECT employee_num,Department AS department , Rank AS rank ,device_info.Telnum AS phone, Name AS name , Active as active
+	FROM terriordb.user_info
+	JOIN device_info ON employee_num = device_info.User_info_employee_num
+	JOIN device_management ON device_info.ID = device_management.Device_info_Id
+	WHERE employee_num
+	NOT IN (
+		SELECT employee_num FROM device_group
+	    WHERE group_owner =#{id}
+		AND group_name =#{group_name}
+	);]]>
+	</select>
+	
+	<select id="group_check" resultType="int">
+		SELECT COUNT(*) FROM device_group
+		WHERE group_name =#{group_name}
+		AND group_owner =#{id}
+	</select>
+	
+	<delete id="group_delete">
+		DELETE FROM device_group
+		WHERE group_name =#{group_name}
+		AND group_owner =#{id};
+	</delete>
+	
+	<insert id="group_update"><!--Group_Data에서 g_updata 확인 -->
+		INSERT INTO device_group(group_name,employee_num,group_owner) 
+		VALUES
+		<foreach item="item" index="index" collection="list" separator="," open="" close="">
+			(#{item.group_name} ,
+			#{item.employee_num},
+			#{item.group_owner})
+		</foreach>
+	</insert>
+
+	<insert id="group_log">
+		INSERT INTO device_group_history(group_name,group_owner,group_con,group_active)
+		VALUES(#{group_name},#{group_owner},#{group_con},#{group_active})
+	</insert>
+	
+	<select id="group_log_list" resultType="G_mgt_log_VO">
+		SELECT * FROM device_group_history WHERE group_owner=#{owner}
+	</select>
+
+</mapper>

@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+.dual-list .list-group {
+	margin-top: 8px;
+}
+
+.list-left li, .list-right li {
+	cursor: pointer;
+}
+
+.list-arrows {
+	padding-top: 100px;
+}
+
+.list-arrows button {
+	margin-bottom: 20px;
+}
+
+.active_list{/* 클릭했을 엑티브 색바꾸기 */
+	background-color:#e0e0e0 ;
+	border-top: 1px solid #fff;
+}
+.active_list td{/* 클릭했을 엑티브 글자색바꾸기 */
+	color: #000000;
+}

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="R_mgt_Mapper">
+	
+	<select id="r_list" resultType="R_mgt_list_VO">
+		SELECT
+			idcontrol_board AS bno,
+		    title,
+		    User_info_employee_num AS employee_num,
+			user_info.Department,
+		    user_info.Rank,
+		    user_info.Name,
+		    regist_date AS date,
+		    admit
+		FROM control_board
+		INNER JOIN user_info ON control_board.User_info_employee_num = user_info.employee_num
+		<choose>
+    		<when test='w_c=="wait"'>
+				WHERE admit = 0
+			</when>
+			<otherwise>
+				WHERE admit != 0
+			</otherwise>
+		</choose>
+		ORDER BY idcontrol_board DESC, regist_date DESC LIMIT #{cri.pageStart},#{cri.perPageNum};
+	</select>
+	
+	<select id="r_list_s" resultType="R_mgt_list_VO">
+		SELECT
+			idcontrol_board AS bno,
+		    title,
+		    User_info_employee_num AS employee_num,
+			user_info.Department,
+		    user_info.Rank,
+		    user_info.Name,
+		    regist_date AS date
+		FROM control_board
+		INNER JOIN user_info ON control_board.User_info_employee_num = user_info.employee_num
+		<choose>
+    		<when test='w_c=="wait"'>
+				WHERE admit = 0
+			</when>
+			<otherwise>
+				WHERE admit != 0
+			</otherwise>
+		</choose>
+		<if test='vo.title !=""'>
+			AND title LIKE #{vo.title}
+		</if>
+		<if test='vo.employee_num !=""'>
+			AND employee_num = #{vo.employee_num}
+		</if>
+		<if test='vo.department !="선택"'>
+			AND department = #{vo.department}
+		</if>
+		<if test='vo.rank !="선택"'>
+			AND rank = #{vo.rank}
+		</if>
+		<if test='vo.name !=""'>
+			AND name = #{vo.name}
+		</if>
+		<if test='vo.date !=""'>
+			AND regist_date like #{vo.date}
+		</if>
+		ORDER BY idcontrol_board DESC, regist_date DESC LIMIT #{cri.pageStart},#{cri.perPageNum};
+	</select>
+	
+	<select id="countPaging" resultType="int">
+		SELECT COUNT(idcontrol_board)
+		FROM control_board
+		<choose>
+    		<when test='w_c=="wait"'>
+				WHERE admit = 0
+			</when>
+			<otherwise>
+				WHERE admit != 0
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="countPaging_s" resultType="int">
+		SELECT COUNT(idcontrol_board) FROM control_board
+		INNER JOIN user_info ON control_board.User_info_employee_num = user_info.employee_num
+		<choose>
+    		<when test='w_c=="wait"'>
+				WHERE admit = 0
+			</when>
+			<otherwise>
+				WHERE admit != 0
+			</otherwise>
+		</choose>
+		<if test='vo.title !=""'>
+			AND title LIKE #{vo.title}
+		</if>
+		<if test='vo.employee_num !=""'>
+			AND User_info_employee_num = #{vo.employee_num}
+		</if>
+		<if test='vo.department !="선택"'>
+			AND user_info.Department = #{vo.department}
+		</if>
+		<if test='vo.rank !="선택"'>
+			AND user_info.Rank = #{vo.rank}
+		</if>
+		<if test='vo.name !=""'>
+			AND user_info.Name = #{vo.name}
+		</if>
+		<if test='vo.date !=""'>
+			AND regist_date like #{vo.date}
+		</if>;
+	</select>
+	
+	<select id="r_read" resultType="R_mgt_read_VO">
+		SELECT
+			User_info_employee_num AS employee_num,
+		    title,
+		    file_exist,
+		    contents,
+		    grant_date AS date,
+		    admit
+		FROM control_board
+		WHERE idcontrol_board = #{bno};
+	</select>
+	
+	<update id="r_grant">
+		UPDATE control_board
+		SET admit='1', grant_date = now()
+		WHERE idcontrol_board=#{bno};
+	</update>
+	
+	<update id="r_deny">
+		UPDATE control_board
+		SET admit='2', grant_date = now()
+		WHERE idcontrol_board=#{bno};
+	</update>
+</mapper>

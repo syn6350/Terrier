@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="n_mgt_Mapper">
+
+	<select id="all_list" resultType="com.terrier.domain.Board_VO">
+		SELECT * from notice_board
+	</select>
+	
+	<select id="board_read" resultType="com.terrier.domain.Board_VO">
+		SELECT * FROM notice_board WHERE bno=#{bno}
+	</select>
+	
+	<update id="board_readcnt">
+		UPDATE notice_board SET viewcnt = viewcnt + 1 WHERE bno = #{bno}
+	</update>
+	
+	<insert id="board_create">
+		INSERT INTO notice_board (title,content,writer) VALUES(#{title},#{content},#{writer})
+	</insert>
+	
+	<update id="board_modify">
+	
+	</update>
+	
+	<delete id="board_delete">
+		DELETE FROM notice_board WHERE bno=#{bno}
+	
+	</delete>
+	
+	<select id="getTime" resultType="java.util.Date">
+		select now();	
+	</select>
+	
+	<select id="listPage" resultType="com.terrier.domain.Board_VO">
+		<![CDATA[
+			select bno,title,content,writer,regdate,viewcnt from notice_board where bno>0 order by bno desc,regdate desc limit #{page},10
+		]]>						
+	</select>
+	
+	<select id="listCri" resultType="com.terrier.domain.Board_VO">
+		<![CDATA[
+			select bno,title,content,writer,regdate,viewcnt,replycnt from notice_board where bno>0 order by bno desc, regdate desc limit #{pageStart},#{perPageNum} 
+		]]>
+	</select>
+	
+	<select id="countPaging" resultType="int">
+		<![CDATA[
+			select count(bno) from notice_board where bno>0
+		]]>
+		
+	</select>
+	
+	
+	
+
+	
+	
+	<!-- 댓글 조회 -->
+	<select id="reply_list" resultType="com.terrier.domain.Reply_VO">
+		select * from notice_reply where paren_bo_no = #{bno} and paren_re_no = 0
+	</select>
+
+	<!-- 댓글 등록 -->
+	<insert id="reply_regist">
+		insert into notice_reply (paren_bo_no,writer,content) VALUES(#{paren_bo_no},#{writer},#{content})
+	</insert>
+
+	<!-- 댓글 개수 추가 -->
+	<update id="add_replycnt">
+		UPDATE notice_board SET replycnt = replycnt + 1 WHERE bno=#{bno};
+	</update>
+
+	<!-- 댓글의 댓글 조회 -->
+	<select id="reply_reply" resultType="com.terrier.domain.Reply_VO">
+		select * from notice_reply where paren_bo_no = #{bno} and paren_re_no != 0
+	</select>
+	
+	<!-- 댓글의 댓글 등록 -->
+	<insert id="reply_reply_regist">
+		insert into notice_reply (paren_bo_no,paren_re_no,writer,content) VALUES(#{paren_bo_no},#{paren_re_no},#{writer},#{content})
+	</insert>
+	
+
+
+</mapper>

@@ -1,0 +1,131 @@
+@charset "UTF-8";
+
+html, body 
+{
+		font:14px/1.8 Arial, Helvetica,sans-serif;
+		/* 글자의 서체나 크기 줄을 지정하는것 */ 
+		margin: 0;
+		padding: 0;
+}
+
+#container{
+	margin: 0;
+	padding: 0;
+	
+}
+#header{
+	/* 상단 시트 */
+	padding:0 0;
+	height: 50px;
+	margin-bottom:0;
+	background-color: #3367D6;
+}
+#terrier{
+	font-weight:bold;
+	color: #ffffff;
+	
+}
+#header .navbar-nav >li>a , #pjh{
+	font-size: 13px;
+	color: white;
+	padding: 15px 50px;
+}
+#header .navbar-nav >  li >  a:hover{
+	background-color: #2850A7;
+	height: 100%;
+
+}
+/*-----------------------상단----------------------------*/
+
+#nav{/* 사이드메뉴css변경 */
+	
+	padding-left: 0;
+	padding-top: 0;
+	padding : 0;
+	background-color: #F8F8F8;
+	height:auto; 
+	border-right: 1px solid #e7e7e7;  /* 사이드오른쪽 밑줄  */
+}
+#main-menu li{/* 메인메뉴 css 변경 */
+	border-bottom: 1px solid #e7e7e7; /* 메뉴사이 밑줄 */
+}
+
+#main-menu li li{
+	text-indent:35px;
+	border-bottom: 0px; /* 메뉴사이 밑줄 */ 
+}
+
+
+/*-----------------------사이드메뉴----------------------------*/
+
+
+#content{
+	/* 메인 시트 */
+  margin-top:30px;
+  margin-bottom:0px;
+  margin-left:0px;
+  margin-right:0px;
+}
+
+#title {
+  font:20px/1.8 Arial, Helvetica,sans-serif;
+  color:#3367D6;
+  font-weight:bold;
+  padding-bottom:15px;
+  border-bottom: 1px solid #3367D6; /* 메뉴사이 밑줄 */
+  margin-bottom: 15px; 
+	
+}
+
+
+/* 안드로이드 on/off 버튼 */
+#dev_on {
+    padding:2px 23px;
+    display:inline;
+    font-size:30px;
+    
+    color:#3367d6;
+    text-shadow: 2px 2px 10px #3060d0;
+    background: linear-gradient(#ffffff,#f9f9f9);
+    box-shadow: 0px 0px 2px 2px #3367d6;
+}
+
+#dev_on:hover ,#dev_off:hover{
+  text-decoration: none
+}
+
+
+#dev_off {
+    
+    padding-top:2px;
+    padding-bottom:2px;
+    padding-left:23px;
+    padding-right:16px;
+    
+    display:inline;
+    font-size:30px;
+    
+    color:#d9534f;
+    text-shadow: 2px 2px 10px #d05040;
+    background: linear-gradient(#ffffff,#f9f9f9);
+    box-shadow: 0px 0px 2px 2px #d9534f;
+}
+
+/*-----------------------컨텐츠 메뉴----------------------------*/
+
+
+
+#footer{
+	/* 하단 시트 */
+	border-bottom:1px solid #e7e7e7;
+	border-top: 1px solid #e7e7e7;
+	background-color:#ffffff;
+	text-align: center;
+	font-size: 0.8em;
+}
+/*-----------------------하단 메뉴----------------------------*/
+
+ 
+
+
+

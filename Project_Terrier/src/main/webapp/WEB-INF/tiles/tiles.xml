@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	<definition name="layout" template="/WEB-INF/views/template/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+		<put-attribute name="nav" value="/WEB-INF/views/template/nav.jsp"/>		
+		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
+	</definition>
+	
+	<!-- 예외 -->
+	<definition name="terrier/device_management/c_mgt" template="/WEB-INF/views/terrier/device_management/c_mgt.jsp">
+		<put-attribute name="content" value=""/>
+	</definition>
+	
+	<definition name="terrier/group_management/emp_list" template="/WEB-INF/views/terrier/group_management/emp_list.jsp">
+		<put-attribute name="content" value=""/>
+	</definition>
+	
+	<definition name="terrier/group_management/g_Create" template="/WEB-INF/views/terrier/group_management/g_Create.jsp">
+		<put-attribute name="content" value=""/>
+	</definition>
+	
+	<definition name="terrier/group_management/g_EmpList_All" template="/WEB-INF/views/terrier/group_management/g_EmpList_All.jsp">
+		<put-attribute name="content" value=""/>
+	</definition>
+	
+	<definition name="terrier/group_management/g_EmpList_InGroup" template="/WEB-INF/views/terrier/group_management/g_EmpList_InGroup.jsp">
+		<put-attribute name="content" value=""/>
+	</definition>
+	
+	<definition name="terrier/group_management/g_EmpList_A_empty" template="/WEB-INF/views/terrier/group_management/g_EmpList_A_empty.jsp">
+		<put-attribute name="content" value=""/>
+	</definition>
+	
+	<definition name="terrier/group_management/g_EmpList_G_empty" template="/WEB-INF/views/terrier/group_management/g_EmpList_G_empty.jsp">
+		<put-attribute name="content" value=""/>
+	</definition>
+	
+	<definition name="terrier/statistics_management/control_dep_ctl" template="/WEB-INF/views/terrier/statistics_management/control_dep_ctl.jsp">
+		<put-attribute name="content" value=""/>
+	</definition>
+	<!-- 타일즈 예외처리end -->
+	
+	<definition name="terrier/*" extends="layout"><!--*/*는 컨트롤러가return하는값에 layout을 상속시킨다.또한 /terrier/test는 컨트롤러입력값이된다.-->
+		<put-attribute name="content" value="/WEB-INF/views/terrier/{1}.jsp" />
+		<!--{1}과{2}는 컨트롤러가return해주는 view 따라 자동으로 1과 2에 들어간다-->	
+	</definition>
+
+	<definition name="terrier/*/*" extends="layout">
+		<put-attribute name="content" value="/WEB-INF/views/terrier/{1}/{2}.jsp" />
+	</definition>
+	
+
+	
+	
+</tiles-definitions>
