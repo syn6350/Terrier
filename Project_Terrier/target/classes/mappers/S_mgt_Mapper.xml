@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="S_mgt_Mapper">
+
+	<!-- 날짜 테스트 -->
+	<select id="test_date" resultType="com.terrier.domain.Test_VO">
+		SELECT
+		idDevice_history
+		FROM terriordb.device_history
+		WHERE REPLACE(REPLACE(LEFT(date,LENGTH(date) - 9),' ','-'),'/','-') = #{date};
+	</select>
+
+	<!-- 기능별 제어현황 개수 - on인지 off인지 개수 출력 -->
+	<select id="control_status_count" resultType="com.terrier.domain.Control_count_VO">
+		SELECT 
+			COUNT(CASE WHEN Wifi=#{status} THEN 1 END) AS wifi,
+		    COUNT(CASE WHEN Bluetooth=#{status} THEN 1 END) AS bluetooth,
+		    COUNT(CASE WHEN Tethering=#{status} THEN 1 END) AS tethering,
+		    COUNT(CASE WHEN Camera=#{status} THEN 1 END) AS camera,
+		    COUNT(CASE WHEN VoiceRecord=#{status} THEN 1 END) AS voiceRecord
+		FROM device_management;
+	</select>
+
+	<select id="department_control_on" resultType="int">
+		SELECT 
+			COUNT(CASE WHEN Wifi='on' THEN 1 END)
+			+ COUNT(CASE WHEN Bluetooth='on' THEN 1 END)
+			+ COUNT(CASE WHEN Tethering='on' THEN 1 END)
+			+ COUNT(CASE WHEN Camera='on' THEN 1 END)
+			+ COUNT(CASE WHEN VoiceRecord='on' THEN 1 END)
+		FROM device_management
+		INNER JOIN device_info ON device_management.Device_info_Id = device_info.Id
+		INNER JOIN user_info ON device_info.User_info_employee_num = user_info.employee_num
+		WHERE user_info.Department = #{department};
+	</select>
+	
+	<select id="department_control_status" resultType="com.terrier.domain.Control_count_VO">
+	SELECT 
+		COUNT(CASE WHEN Wifi=#{status} THEN 1 END) AS wifi,
+	    COUNT(CASE WHEN Bluetooth=#{status} THEN 1 END) AS bluetooth,
+	    COUNT(CASE WHEN Tethering=#{status} THEN 1 END) AS tethering,
+	    COUNT(CASE WHEN Camera=#{status} THEN 1 END) AS camera,
+	    COUNT(CASE WHEN VoiceRecord=#{status} THEN 1 END) AS voiceRecord
+	FROM device_management
+	INNER JOIN device_info ON device_management.Device_info_Id = device_info.Id
+	INNER JOIN user_info ON device_info.User_info_employee_num = user_info.employee_num
+	WHERE user_info.Department = #{department};
+	</select>
+</mapper>

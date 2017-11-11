@@ -2,9 +2,11 @@ package com.terrier.persistence;
 
 import java.util.List;
 
+import com.terrier.domain.Criteria;
 import com.terrier.domain.Employee_VO;
 import com.terrier.domain.L_mgt_controller_VO;
 import com.terrier.domain.L_mgt_lf_log_VO;
+import com.terrier.domain.L_mgt_lr_list_VO;
 
 public interface L_mgt_DAO {
 	public L_mgt_controller_VO info(String e_num)throws Exception;
@@ -18,4 +20,11 @@ public interface L_mgt_DAO {
 	
 	public void l_unlock(String employee_num)throws Exception; // 잠금해제
 	public String l_camera_auth(String employee_num)throws Exception; // 인식률 조회
+	
+	public List<L_mgt_lr_list_VO> l_request_list(Criteria cri)throws Exception; // 분실 요청 리스트
+	public int l_request_count()throws Exception; // 분실 요청 갯수
+	
+	public List<L_mgt_lr_list_VO> l_request_list_search(Criteria cri, L_mgt_lr_list_VO vo)throws Exception; // 분실 요청 리스트 검색
+	public int l_request_search_count(Criteria cri, L_mgt_lr_list_VO vo)throws Exception; // 분실 요청 리스트 검색 갯수
+	public void l_loss_check(String bno)throws Exception; // 확인 했으니 삭제요청
 }

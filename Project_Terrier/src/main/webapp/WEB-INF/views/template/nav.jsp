@@ -21,8 +21,8 @@
 			<li><a data-toggle="collapse" data-target="#loss_management" style="cursor:pointer;"><span class="glyphicon glyphicon-erase" style="font-size:20px;"></span>&nbsp;&nbsp;분실 관리</a>
 				<ul class="collapse nav nav-pills nav-stacked" id="loss_management">
 					<li id="lr_list"><a href="/terrier/loss_management/lr_list">분실 요청 리스트</a></li>
-					<li id="lf_list"><a href="/terrier/loss_management/lf_list">로그인 실패 리스트</a></li>
 					<li id="l_list"><a href="/terrier/loss_management/l_list">분실 처리</a></li>
+					<li id="lf_list"><a href="/terrier/loss_management/lf_list">로그인 실패 리스트</a></li>
 				</ul>
 				
 			<li><a data-toggle="collapse" data-target="#request_management" style="cursor:pointer;"><span class="glyphicon glyphicon-send" style="font-size:20px;"></span>&nbsp;&nbsp;요청 관리</a>

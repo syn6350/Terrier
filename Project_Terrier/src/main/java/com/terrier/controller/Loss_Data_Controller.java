@@ -140,4 +140,19 @@ public class Loss_Data_Controller {
 		}
 	    return response;
 	}
+	
+	@RequestMapping(value="loss_management/loss_check",method=RequestMethod.GET)
+	public ResponseEntity<String> loss_check(@RequestParam("bno") String bno) throws Exception
+	{
+		ResponseEntity<String> response = null; 
+		
+		l_mgt_service.l_loss_check(bno);
+		try {
+			response = new ResponseEntity<String>("SUCCESS",HttpStatus.OK);
+		}
+		catch(Exception e) {
+			response = new ResponseEntity<String>("BAD",HttpStatus.BAD_REQUEST);
+		}
+	    return response;
+	}
 }
